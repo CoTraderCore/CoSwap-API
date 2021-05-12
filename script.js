@@ -4,15 +4,26 @@ const express = require("express");
 const app = express();
 const port = process.env.PORT || 3000;
 
-
 app.get("/summary", async (req, res) => {
   try {
     const result = await axios.post(
       "https://api.thegraph.com/subgraphs/name/vishalkale151071/cotrader",
       {
         query: `{
+            tokens(first: 5) {
+              id
+              symbol
+              name
+              decimals
+              totalSupply
+              tradeVolume
+              tradeVolumeUSD
+              totalLiquidity
+            }
+          
                 pairs{
                     id
+                    createdAtTimestamp
                     token0{
                       symbol
                       totalSupply
@@ -32,7 +43,7 @@ app.get("/summary", async (req, res) => {
               }`,
       }
     );
-    //console.log(result.data.data);
+    console.log(result.data.data);
     res.send(result.data.data);
   } catch (e) {
     console.log(e);
@@ -57,7 +68,34 @@ app.get("/tokens", async (req, res) => {
           }`,
       }
     );
-    //console.log(result.data.data);
+    console.log(result.data.data);
+    res.send(result.data.data);
+  } catch (e) {
+    console.log(e);
+  }
+});
+
+app.get("/tokens/:address", async (req, res) => {
+  try {
+    const result = await axios.post(
+      "https://api.thegraph.com/subgraphs/name/vishalkale151071/cotrader",
+      {
+        query: `{
+          tokens(where:{
+            id: "${req.params.address}"
+          }){
+           
+            symbol
+            name
+            totalSupply
+            tradeVolume
+            tradeVolumeUSD
+            totalLiquidity
+          }
+        }`,
+      }
+    );
+    console.log(result.data.data);
     res.send(result.data.data);
   } catch (e) {
     console.log(e);
@@ -93,7 +131,7 @@ app.get("/pairs", async (req, res) => {
           }`,
       }
     );
-    //console.log(result.data.data);
+    console.log(result.data.data);
     res.send(result.data.data);
   } catch (e) {
     console.log(e);
