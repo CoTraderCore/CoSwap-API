@@ -38,7 +38,7 @@ app.get("/summary", async (req, res) => {
                     token1Price
                     volumeToken0
                     volumeToken1
-                    totalSupply
+                    totalSupply 
                   }
               }`,
       }
